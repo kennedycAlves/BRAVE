@@ -90,6 +90,8 @@ return [
     'layout_fixed_footer' => null,
     'layout_dark_mode' => null,
 
+
+    
     /*
     |--------------------------------------------------------------------------
     | Authentication Views Classes
@@ -188,7 +190,7 @@ return [
     */
 
     'use_route_url' => false,
-    'dashboard_url' => 'home',
+    'dashboard_url' => 'dash',
     'logout_url' => 'logout',
     'login_url' => 'login',
     'register_url' => 'register',
@@ -225,7 +227,7 @@ return [
     */
 
     'menu' => [
-        // Navbar items:
+      'MENU',
         [
             'type'         => 'navbar-search',
             'text'         => 'search',
@@ -243,15 +245,22 @@ return [
         ],
 
         [
+            'text' => 'Dashboard',
+            'url'  => '/dash',
+            'icon' => 'fas fa-fw fa-chart-line',
+            
+        ],
+
+        [
             'text' => 'Financeiro',
             'url'  => 'admin/settings',
             'icon' => 'fas fa-fw fa-book',
             'submenu' => [
                 
-                    [
-                        'text' => 'level_one',
-                        'url'  => '#',
-                    ],
+                [
+                    'text' => 'Fluxo de caixa',
+                    'url'  => '/cicloPagamento',
+                ],
                     
                     [
                         'text' => 'level_two',
@@ -260,12 +269,25 @@ return [
                 
                 ]
         ],
-        [
-            'text' => 'Dashboard',
-            'url'  => '/Dash',
-            'icon' => 'fas fa-fw fa-chart-line',
-            
-        ],
+        // [
+        //     'text' => 'Controle de Estoque',
+        //     'icon' => 'fas fa-fw fa-cubes',
+        //     'submenu' => [
+                
+        //             [
+        //                 'text' => 'Cadastro',
+        //                 'url'  => '/cadastro_estoque',
+        //             ],
+                    
+        //             [
+        //                 'text' => 'Listagem',
+        //                 'url'  => '#',
+        //             ],
+                
+        //         ]
+        // ],
+        
+       
         // [
         //     'text' => 'blog',
         //     'url'  => 'admin/blog',

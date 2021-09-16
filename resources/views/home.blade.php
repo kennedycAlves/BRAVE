@@ -3,7 +3,21 @@
 @section('title', 'BRAVE')
 
 @section('content_header')
-    <h1 class="m-0 text-dark"></h1>
+<section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Page</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">dash</a></li>
+            <li class="breadcrumb-item active">page</li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
 @stop
 
 @section('content')

@@ -8,14 +8,14 @@
 
 @section('content')
     <div class="row">
-        <div class="col-12">
+        <div class="col-6">
             <div class="card">
                 <div class="card-body">
                     <div class="small-box bg-green">
-                        <div class="inner">
+                        <div id="app" class="inner">
                             <h3>53<sup style="font-size: 20px">%</sup></h3>
             
-                            <p>Exemple Rate</p>
+                            <p>Teste</p>
                         </div>
                         <div class="icon">
                             <i class="ion ion-stats-bars"></i>
@@ -24,8 +24,16 @@
                             More info <i class="fa fa-arrow-circle-right"></i>
                         </a>
                         </div>
+                        
                 </div>
             </div>
         </div>
+        
     </div>
 @stop
+<script>
+
+
+
+
+</script>
