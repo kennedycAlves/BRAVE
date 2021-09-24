@@ -29,6 +29,7 @@ class cicloPagamento extends Controller
         ->select('id', 'nome_credito as Descrição do Crédito', 'mes as Mês de lançamento',
                 'ano as Ano de lançamento','valor_credito as Valor do crédito')
         ->where('tipo','credito')
+        ->where('user_id', Auth::user() -> id)
         ->get();
 
         return response()->json($getDados);
@@ -42,38 +43,14 @@ class cicloPagamento extends Controller
         $save = DB::connection('mysql')->table('tb_creditos')->insert(
             [
              'user_id' =>  Auth::user() -> id ,  
-            //  'valor_credito'  => number_format(floatval(request('Valor_do_crédito')),2),
+            //  'valor_debito'  => number_format(floatval(request('Valor_do_débito')), 2),
              'valor_credito'  => floatval(request('Valor_do_crédito')),
              'nome_credito' => request('Descrição_do_Crédito'),
              'mes' => request('Mês_de_lançamento'),
              'ano' => intval(request('Ano_de_lançamento')),
-             'tipo','credito'
+             'tipo' => 'credito'
                 
-            //     'pipe' => request('idPipe'),
-            // 'id_proposta' => request('idProposta'),
-            // 'projeto' => request('nomeProjeto'),
-            // 'regional' => request('regional'),
-            // 'gv' => request('gv'),
-            // 'nome_cdc' => request('nomeCDC'),
-            // 'objeto' => request('objeto'),
-            // 'modalidade' => request('modalidade'),
-            // 'tipo_licitacao' => request('tipoLicitacao'),
-            // 'hora_certame' => request('horaCertame'),
-            // 'site_oficial' => request('siteOficial'),
-            // 'created_at' => $data,
-            // 'updated_at' => $data,
-            // 'n_edital' => request('nEdital'),
-            // 'uasg' => request('nLicitacao'),
-            // 'pk' => request('pk'),
-            // 'data_certame' => request('dataCertame'),
-            // 'data_questionamento' => request('dataQuestionamento'),
-            // 'data_impugnacao' => request('dataImpugnacao'),
-            // 'status' => 'Não solicitado',
-            // 'id_cadastrante' => request('idCadastrande'),
-            // 'nome_cadastrante' => Auth::user() -> name,
-            // 'email_aprovador' => $email_gestor,
-            // 'id_aprovador' =>  $id_gestor,
-            // 'email_cadastrante' => Auth::user() -> email
+        
           ]);
 
     }
@@ -122,6 +99,7 @@ class cicloPagamento extends Controller
         ->select('id', 'nome_debito as Descrição do débito', 'mes as Mês de lançamento',
                 'ano as Ano de lançamento','valor_debito as Valor do débito')
         ->where('tipo','debito')
+        ->where('user_id', Auth::user() -> id)
         ->get();
 
         return response()->json($getDados);
@@ -254,6 +232,23 @@ class cicloPagamento extends Controller
             ->where('ano',  $anoAtual)
             ->where('tipo','debito')
             ->get();
+
+        $calTotalCred = 0;
+        $calTotalDeb = 0;
+        foreach($creditosMesAtual as $total){
+
+            $calTotalCred = $total->total;
+
+        }
+
+        foreach($debitosMesAtual as $total){
+
+            $calTotalDeb = $total->total;
+
+        }
+
+        $liquidMesAtual = $calTotalCred -  $calTotalDeb;
+        // echo($liquidMesAtual);
         // dd($debitosMesAtual);
         
         // if($mesAtual != 1){
@@ -487,7 +482,7 @@ class cicloPagamento extends Controller
     //    dd($creditosMesAtual);
     // dd($mesAtual, $creditosJaneiro, $creditosFevereiro, $creditosMarco, $creditosAbril, $creditosMaio, $creditosJunho, $creditosJulho, $creditosAgosto, $creditosSetembro, $creditosOutubro, $creditosNovembro, $creditosDezembro );
     // dd($creditosMesAtual);
-    return view('cicloPagamento', compact('creditosMesAtual', 'debitosMesAtual'));
+    return view('cicloPagamento', compact('creditosMesAtual', 'debitosMesAtual', 'liquidMesAtual'));
         
     }
 
@@ -505,12 +500,16 @@ class cicloPagamento extends Controller
         $anoAtual = $data['year'];
 
         $getDados = DB::table('tb_creditos')
-        ->select('mes',DB::raw('SUM(valor_credito) as total'))
+        ->select('mes',DB::raw('SUM(valor_credito) as total, 
+                                SUM(valor_debito) as totaldeb,
+                                SUM(valor_credito) - SUM(valor_debito) as totalLiq'))
         ->where('user_id', Auth::user() -> id)
         ->where('ano',  $anoAtual)
         ->groupBy('mes')
         ->orderBy('mes')
         ->get();
+
+        // dd($getDados);
 
         // $getDados .= DB::table('tb_debitos')
         // ->select('mes',DB::raw('SUM(valor_debito) as total'))

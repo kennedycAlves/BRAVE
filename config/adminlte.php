@@ -193,7 +193,7 @@ return [
     'dashboard_url' => 'dash',
     'logout_url' => 'logout',
     'login_url' => 'login',
-    'register_url' => 'register',
+    'register_url' => '/registerUser',
     'password_reset_url' => 'password/reset',
     'password_email_url' => 'password/email',
     'profile_url' => false,
@@ -258,8 +258,9 @@ return [
             'submenu' => [
                 
                 [
-                    'text' => 'Fluxo de caixa',
-                    'url'  => '/cicloPagamento',
+                    'text' => 'Fluxo de Caixa',
+                    'url'  => '/fluxo_caixa',
+                    'icon' => 'fas fa-fw fa-retweet',
                 ],
                     
                     [
@@ -300,10 +301,10 @@ return [
         //     'label'       => 4,
         //     'label_color' => 'success',
         // ],
-        ['header' => 'account_settings'],
+        ['header' => 'Admin'],
         [
-            'text' => 'profile',
-            'url'  => 'admin/settings',
+            'text' => 'Profiles/Users',
+            'url'  => '/registrar',
             'icon' => 'fas fa-fw fa-user',
         ],
         [

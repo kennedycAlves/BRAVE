@@ -12,8 +12,8 @@
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item">Controle de Estoque</li>
-            <li class="breadcrumb-item active">Cadastro</li>
+            <li class="breadcrumb-item">Financeiro</li>
+            <li class="breadcrumb-item active">Fluxo de Caixa</li>
           </ol>
         </div>
       </div>
@@ -32,8 +32,8 @@
     left: 2%;
 }.chartTodosMedes{
   position: relative;
-    /* margin: 1%; */
-    left: 15%;
+    margin: 1%;
+    left: 19%;
 }
 
 .consolidadoCreditoMesAtual
@@ -49,12 +49,18 @@
   left: 15%;
 }
 
+.consolidadoLiqMesAtual{
+  position: relative;
+    /* margin: 1%; */
+  left: 15%;
+}
+
 
 </style>
 
 @section('content')
 <div class="row">
-<div class="col-lg-4 col-6 consolidadoCreditoMesAtual">
+<div class="col-lg-3 col-4 consolidadoCreditoMesAtual">
   <!-- small card -->
   <div class="small-box bg-success">
     <div class="inner">
@@ -70,7 +76,23 @@
     </a>
   </div>
 </div>
-<div class="col-lg-4 col-6 consolidadoDebitosMesAtual">
+<div class="col-lg-2 col-4 consolidadoLiqMesAtual">
+  <!-- small card -->
+  <div class="small-box bg-info">
+    <div class="inner">
+      <h3>R$ {{number_format($liquidMesAtual, 2,",",".")}}<sup style="font-size: 20px"></sup></h3>
+
+      <p>Lucro mês atual</p>
+    </div>
+    <div class="icon">
+      <i class="fas fa-money-check-alt"></i>
+    </div>
+    <a href="#" class="small-box-footer">
+      More info <i class="fas fa-arrow-circle-right"></i>
+    </a>
+  </div>
+</div>
+<div class="col-lg-3 col-4 consolidadoDebitosMesAtual">
   <!-- small card -->
   <div class="small-box bg-danger">
     <div class="inner">
@@ -124,11 +146,11 @@
  
   <div class="row">
     
-    <div class="col-md-4 chartTodosMedes">
+    <div class="col-md-7 chartTodosMedes">
       <!-- LINE CHART -->
       <div class="card card-success">
         <div class="card-header">
-          <h3 class="card-title">Consolidação Créditos Anual</h3>
+          <h3 class="card-title">Consolidação Anual</h3>
 
           <div class="card-tools">
             <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -149,11 +171,11 @@
 
     </div>
     <!-- /.col (RIGHT) -->
-    <div class="col-md-4 chartTodosMedes">
+    {{-- <div class="col-md-4 chartTodosMedes"> --}}
       <!-- LINE CHART -->
-      <div class="card  card-danger">
+      {{-- <div class="card  card-danger">
         <div class="card-header">
-          <h3 class="card-title">Consolidação Débitos Anual</h3>
+          <h3 class="card-title">Consolidação Anual Débitos e Cŕeditos</h3>
 
           <div class="card-tools">
             <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -170,7 +192,7 @@
           </div>
         </div>
         <!-- /.card-body -->
-      </div>
+      </div> --}}
 
     </div>
   </div> 

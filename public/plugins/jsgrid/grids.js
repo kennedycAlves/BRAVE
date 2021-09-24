@@ -1,6 +1,6 @@
 
 
-$(function() {
+$(document).ready(function() {
 
    
     
@@ -304,6 +304,159 @@ if(value > 0)
 // items: categorias, valueField: "id", textField: "nome" },
 {
 type: "control"
+}
+]
+
+
+
+// });
+
+});
+
+
+
+jsGrid.locale("pt-br");
+$('#grid_table_listuser').jsGrid({
+
+width: "100%",
+height: "600px",
+
+filtering: true,
+// inserting:true,
+editing: true,
+sorting: true,
+paging: true,
+autoload: true,
+pageSize: 10,
+pageButtonCount: 5,
+
+controller: {
+loadData: function(filter){
+return $.ajax({
+type: "GET",
+url: "/adminUser",
+data: filter
+});
+},
+// insertItem: function(item){
+// return $.ajax({
+// type: "POST",
+// url: "/adminUser",
+// data:item
+
+// });
+
+// },
+updateItem: function(item){
+return $.ajax({
+type: "PUT",
+url: "/adminUser",
+data: item
+});
+},
+deleteItem: function(item){
+return $.ajax({
+type: "DELETE",
+url: "/adminUser",
+data: item
+});
+},
+},
+
+fields: [
+{
+    name: "id",
+    type: "hidden",
+    width: 5,
+    css: 'hide'
+},
+{
+    name: "Nome", 
+    type: "text", 
+    width: 60, 
+    validate: "required"
+},
+
+{
+    name: "Email", 
+    type: "text", 
+    width: 60, 
+    validate: "required"
+    },
+
+// {
+// name: "Email", 
+// type: "select", 
+// width: 60, 
+// items: [
+// { Name: "", Id: '' },
+// { Name: "Janeiro", Id: '1' },
+// { Name: "Fevereiro", Id: '2' },
+// { Name: "Março", Id: '3' },
+// { Name: "Abril", Id: '4' },
+// { Name: "Maio", Id: '5' },
+// { Name: "Junho", Id: '6' },
+// { Name: "Julho", Id: '7' },
+// { Name: "Agosto", Id: '8' },
+// { Name: "Setembro", Id: '9' },
+// { Name: "Outubro", Id: '10' },
+// { Name: "Novembro", Id: '11' },
+// { Name: "Dezembro", Id: '12' }
+// ], 
+// valueField: "Id", 
+// textField: "Name", 
+// validate: "required"
+// },
+{
+    name: "Data de criação", 
+    type: "text", 
+    width: 60, 
+},
+
+{
+    name: "Data de Atualização", 
+    type: "text", 
+    width: 60, 
+},
+
+{
+    name: "Resetar Senha", 
+    type: "checkbox", 
+    width: 60, 
+},
+// {
+//     name: "Confirma senha", 
+//     type: "text", 
+//     width: 60, 
+// },
+
+// {
+// name: "age", 
+// type: "text", 
+// width: 50, 
+// validate: function(value)
+// {
+    
+// if(value > 0)
+// {
+    
+//     return true;
+// }
+// }
+// },
+// {
+// name: "nome", 
+// type: "text", 
+// validate: "required"
+// },
+// {
+// name: "categorias",
+// title: "Selecionar nova categorias",
+// type: "select",
+// width: 100,
+// items: categorias, valueField: "id", textField: "nome" },
+{
+    type: "control"
 }
 ]
 
