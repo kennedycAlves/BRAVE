@@ -16,6 +16,7 @@ class UsersTableSeeder extends Seeder
             'name' => 'Kennedy Costa Alves',
             'email' => 'kennedy.c.alves@gmail.com',
             'password' => bcrypt('admin'),
+            'profile_id' => '1',
 
         ]);
     }

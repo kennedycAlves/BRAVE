@@ -202,6 +202,32 @@
 @stop
 
 {{-- <script type="text/javascript" src="/plugins/jsgrid/grids.js"></script> --}}
+@section('footerScripts')
 
 
 
+
+<link type="text/css" rel="stylesheet" href="/plugins/jsgrid/jsgrid.min.css" />
+<link type="text/css" rel="stylesheet" href="/plugins/jsgrid/jsgrid-theme.min.css" />
+<script type="text/javascript" src="/plugins/jsgrid/jsgrid.min.js"></script>
+<script type="text/javascript" src="/plugins/jsgrid/i18n/jsgrid-pt-br.js"></script>
+<script type="text/javascript" src="/plugins/jsgrid/grids.js"></script>
+
+
+<script type="text/javascript" src="/plugins/chartjs/chart.min.js"></script>
+<link type="text/css" rel="stylesheet" href="/plugins/chartjs/chart.min.css" />
+<script type="text/javascript" src="/plugins/chartjs/charts.js"></script>
+
+<script>
+  
+
+  $(document).ready(function() {
+    $.ajaxSetup({
+      headers: {
+          'X-CSRF-TOKEN': "{{ csrf_token() }}"
+      }
+    })
+  })
+</script>
+
+@endsection

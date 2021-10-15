@@ -2,9 +2,19 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-
+    @section('headerScripts')
+        <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
+        {{-- <link type="text/css" rel="stylesheet" href="/plugins/jsgrid/jsgrid.min.css" />
+        <link type="text/css" rel="stylesheet" href="/plugins/jsgrid/jsgrid-theme.min.css" />
+        <script type="text/javascript" src="/plugins/jsgrid/jsgrid.min.js"></script>
+        <script type="text/javascript" src="/plugins/jsgrid/i18n/jsgrid-pt-br.js"></script>
+        <script type="text/javascript" src="/plugins/jsgrid/grids.js"></script>
+        <script type="text/javascript" src="/plugins/chartjs/chart.min.js"></script>
+        <script type="text/javascript" src="/plugins/chartjs/charts.js"></script>
+        <link type="text/css" rel="stylesheet" href="/plugins/chartjs/chart.min.css" /> --}}
+    @show
     @yield('scrpts')
-    <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
+    {{-- <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script> --}}
     {{-- <script type="text/javascript" src="/plugins/jsgrid/jsgrid.min.js"></script>
     <script type="text/javascript" src="/plugins/jsgrid/i18n/jsgrid-pt-br.js"></script>
     <link type="text/css" rel="stylesheet" href="/plugins/jsgrid/jsgrid.min.css" />
@@ -117,6 +127,19 @@
 
     {{-- Custom Scripts --}}
     @yield('adminlte_js')
+    
+
+
+   
+   
+
+ 
+</body>
+
+
+</html>
+
+@section('footerScripts')
     <link type="text/css" rel="stylesheet" href="/plugins/jsgrid/jsgrid.min.css" />
     <link type="text/css" rel="stylesheet" href="/plugins/jsgrid/jsgrid-theme.min.css" />
     <script type="text/javascript" src="/plugins/jsgrid/jsgrid.min.js"></script>
@@ -125,20 +148,4 @@
     <script type="text/javascript" src="/plugins/chartjs/chart.min.js"></script>
     <script type="text/javascript" src="/plugins/chartjs/charts.js"></script>
     <link type="text/css" rel="stylesheet" href="/plugins/chartjs/chart.min.css" />
-
-
-   <script>
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': "{{ csrf_token() }}"
-        }
-    })
-    </script>
-
-   
-
- 
-</body>
-
-
-</html>
+@show

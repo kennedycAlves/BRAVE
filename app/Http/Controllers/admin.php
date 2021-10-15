@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Profile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -158,9 +159,10 @@ class admin extends Controller
 
     public function getUser()
     {
-        $getDados = DB::connection('mysql')->table('users')
-        ->select('id', 'name as Nome', 'email as Email',
-                'created_at as Data de criação','updated_at as Data de Atualização')
+        $getDados = DB::connection('mysql')->table('users as u')
+        ->select('u.id', 'u.name as Nome', 'u.email as Email','p.profile as Perfil',
+                'u.created_at as Data de criação','u.updated_at as Data de Atualização')
+        ->join('profiles as p', 'u.profile_id' ,'=', 'p.id')
         ->get();
 
         return response()->json($getDados);
@@ -226,6 +228,19 @@ class admin extends Controller
 
         }
 
+        if(request('edit') !== "0"){
+
+            $updateUser = DB::connection('mysql')
+            ->table('users')
+            ->where('id',$id)
+            ->update([
+             
+                'profile_id' => request('edit'),
+                'updated_at' => $data
+            ]);
+
+        }
+
         
 
         // dd($request->all());
@@ -241,6 +256,112 @@ class admin extends Controller
         ->table('users')
         ->where('id',request('id'))
         ->delete();
+
+    }
+
+
+    public function postPerfil(Request $request){
+
+        // dd($request->all());
+
+        $validaPerfil = Profile::where( [
+            ['profile', request('nomePerfil')],
+
+        ])->first();
+
+        if(!$validaPerfil){
+            
+            $profile = new Profile();
+            $profile->profile = $request->input('nomePerfil');
+            $profile->save();
+
+            if($profile->save()){
+
+                $message = "Perfil criado com sucesso!";
+                return view('auth.profile')->with(['message'=>$message]);
+            }
+        }else{
+
+            $message = "Perfil já existente";
+            return redirect()->back()->withErrors(  $message)->withInput();
+        }
+
+
+        // $save = DB::connection('mysql')->table('profiles')->insert(
+        //     [
+        //      'profile' => request('profile')
+                
+        
+        //   ]);
+
+        //   if($save){
+            
+        //     $message = "Perfil criado com sucesso!";
+
+        //     // return view('auth.profile');
+        //     return view('auth.profile')->with(['message'=>$message]);
+
+        //   }
+         
+
+    }
+
+    public function getPerfil()
+    {
+        $getDados = DB::connection('mysql')->table('profiles')
+        ->select('id', 'profile as Perfil', 'created_at as Data de criação')
+        ->get();
+
+        return response()->json($getDados);
+    }
+
+
+
+
+    public function putPerfil(Request $request)
+    {
+        //  dd($request->all());
+        
+        $id = request('id');
+          
+        $updateUser = DB::connection('mysql')
+        ->table('profiles')
+        ->where('id',$id)
+        ->update([
+            
+            'profile'  => request('Nome'),
+
+        ]);
+
+
+        
+
+        
+
+        // dd($request->all());
+
+    }
+
+
+    public function deletePerfil(Request $request)
+    {
+
+        // $validaProfileSet = DB::connection('mysql')->table('profiles as p')
+        // ->select('u.profile_id')
+        // ->where('u.profile_id', request('id'))
+        // ->join('users as u', 'u.profile_id', 'p.id')
+        // ->get();
+
+       
+        // if(!$validaProfileSet){
+            // dd($validaProfileSet);
+            $delete =  DB::connection('mysql')
+            ->table('profiles')
+            ->where('id',request('id'))
+            ->delete();
+          
+
+        // }        
 
     }
 }

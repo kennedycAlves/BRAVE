@@ -20,6 +20,25 @@
 
 
 @section('content_header')
+<style>
+  .table_profiles{
+      position: relative;
+      padding: 2%;
+      left: 25%;
+      /* bottom: 400px;  */
+  }
+  .inputPerfil{
+      
+     
+     
+  }
+  
+  
+  </style>
+
+@section('headerScripts')
+  @parent
+@endsection
 
 
 @if (isset($message))
@@ -63,7 +82,7 @@
             <ul class="nav nav-pills">
               <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Criar Novo Usuário</a></li>
               <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">Administrar Usuários</a></li>
-              <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Teste2</a></li>
+              <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Administrar Perfis</a></li>
             </ul>
           </div><!-- /.card-header -->
           <div class="card-body">
@@ -102,6 +121,12 @@
                               <strong>{{ $errors->first('email') }}</strong>
                           </div>
                       @endif
+                  </div>
+                  <div class="form-group">
+                    <label for="perfil">Perfil</label>
+                    <select class="custom-select" id="perfil">
+                      <option value="">Selecione</option>
+                    </select>
                   </div>
           
                   {{-- Password field --}}
@@ -280,53 +305,36 @@
               </div>
               <!-- /.tab-pane -->
 
-              <div class="tab-pane" id="settings">
-                <form class="form-horizontal">
+              <div class="tab-pane inputPerfil" id="settings">
+                <form action="/novoPerfil" method="POST" class="form-horizontal">
+                  @csrf
                   <div class="form-group row">
-                    <label for="inputName" class="col-sm-2 col-form-label">Name</label>
-                    <div class="col-sm-10">
-                      <input type="email" class="form-control" id="inputName" placeholder="Name">
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
-                    <div class="col-sm-10">
-                      <input type="email" class="form-control" id="inputEmail" placeholder="Email">
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label for="inputName2" class="col-sm-2 col-form-label">Name</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control" id="inputName2" placeholder="Name">
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label for="inputExperience" class="col-sm-2 col-form-label">Experience</label>
-                    <div class="col-sm-10">
-                      <textarea class="form-control" id="inputExperience" placeholder="Experience"></textarea>
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label for="inputSkills" class="col-sm-2 col-form-label">Skills</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control" id="inputSkills" placeholder="Skills">
+                    <label for="inputName" class="col-sm-2 col-form-label">Nome</label>
+                    <div class="col-sm-4">
+                      <input type="text" class="form-control" name="nomePerfil" id="nomePerfil" placeholder="Novo Perfil">
                     </div>
                   </div>
                   <div class="form-group row">
                     <div class="offset-sm-2 col-sm-10">
-                      <div class="checkbox">
-                        <label>
-                          <input type="checkbox"> I agree to the <a href="#">terms and conditions</a>
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <div class="offset-sm-2 col-sm-10">
-                      <button type="submit" class="btn btn-danger">Submit</button>
+                      <button type="submit" class="btn btn-success">Criar</button>
                     </div>
                   </div>
                 </form>
+                <div class="row table_profiles">
+                  <div class="col-6">
+                    <div class="card card-info">
+                      <div class="card-header">
+                        <h3 class="card-title">Administrar Perfis</h3>
+                      </div>
+                      <div class="card-body">
+                        <div class="table-responsive">  
+                          {{-- <h3 align="center">Inline Table Insert Update Delete in PHP using jsGrid</h3><br /> --}}
+                          <div id="grid_table_profiles"></div>
+                         </div>  
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
               <!-- /.tab-pane -->
             </div>
@@ -354,15 +362,30 @@
 
   
 
-  @yield('scrptslocal')
+@stop
+
+@section('footerScripts')
 
 
-   
+<link type="text/css" rel="stylesheet" href="/plugins/jsgrid/jsgrid.min.css" />
+<link type="text/css" rel="stylesheet" href="/plugins/jsgrid/jsgrid-theme.min.css" />
+<script type="text/javascript" src="/plugins/jsgrid/jsgrid.min.js"></script>
+<script type="text/javascript" src="/plugins/jsgrid/i18n/jsgrid-pt-br.js"></script>
 
-    <script>
+
+<script>
+
+  
+  
   
 
     $(document).ready(function() {
+
+      $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': "{{ csrf_token() }}"
+        }
+      })
 
      if ($( ".sucesso" ).is( ":visible")){
 
@@ -383,16 +406,323 @@
 
             },8000);
 
-}
+      }
+
+      $.get('/novoPerfil', function(resp) {
+
+                
+
+      const inserirPefil = e => {
+
+        // console.log(e.id)
+      $('#perfil').append(`<option value='${e.id}'>${e.Perfil}</option>`)
+
+      }
+
+      resp.map(inserirPefil)
+
+
+      })
+
+
+      $('.jsgrid-update-button').click(function(){
+         
+        console.log('Clicou')
+        // location.reload(true)
      
-     
-
-     
-
-    })
+       })
 
 
-     </script>
-@stop
+// $.when(
 
+// $.get("/api/v1/clients", function(clients) {
+//     db.clients = clients;
+// }),
+
+$.get("/novoPerfil", function(profiles) {
+    // db.Perfil = owners;
+
+    // const allProfiles = []
+
+    // profiles.map(e => allProfiles.push(e.Perfil))
+
+    // console.log(profiles)
+
+    profiles.unshift({ id: 0, Perfil: "" });
+    
+
+
+// ).then(function() {
+
+    jsGrid.locale("pt-br");
+    $('#grid_table_listuser').jsGrid({
+
+      width: "100%",
+      height: "600px",
+
+      filtering: true,
+      // inserting:true,
+      editing: true,
+      sorting: true,
+      paging: true,
+      autoload: true,
+      pageSize: 5,
+      pageButtonCount: 5,
+
+      controller: {
+      loadData: function(filter){
+        return $.ajax({
+        type: "GET",
+        url: "/adminUser",
+        data: filter
+        });
+      },
+      // insertItem: function(item){
+      // return $.ajax({
+      // type: "POST",
+      // url: "/adminUser",
+      // data:item
+
+      // });
+
+      // },
+      updateItem: function(item){
+        return $.ajax({
+        type: "PUT",
+        url: "/adminUser",
+        data: item
+      });
+      },
+      deleteItem: function(item){
+        return $.ajax({
+        type: "DELETE",
+        url: "/adminUser",
+        data: item
+      });
+      },
+      },
+
+      fields: [
+      {
+          autosearch: true, 
+          align: "center", 
+          name: "id",
+          type: "hidden",
+          width: 5,
+          css: 'hide'
+      },
+      { 
+          autosearch: true, 
+          align: "center", 
+          name: "Nome", 
+          type: "text", 
+          width: 60, 
+          validate: "required"
+      },
+
+      {
+          autosearch: true, 
+          align: "center", 
+          name: "Email", 
+          type: "text", 
+          width: 60, 
+          validate: "required"
+          },
+      {
+          autosearch: true,         
+          align: "center", 
+          name: "Perfil", 
+          title: "Perfil Atual", 
+          type: "text", 
+          width: 60, 
+          type: "hidden"
+      },
+          { 
+            align: "center", 
+            name: "edit", 
+            title: "Editar Perfil", 
+            type: "select", 
+            items: profiles, 
+            valueField: "id", 
+            textField: "Perfil" 
+          },
+           
+          
+
+      // {
+      // name: "Email", 
+      // type: "select", 
+      // width: 60, 
+      // items: [
+      // { Name: "", Id: '' },
+      // { Name: "Janeiro", Id: '1' },
+      // { Name: "Fevereiro", Id: '2' },
+      // { Name: "Março", Id: '3' },
+      // { Name: "Abril", Id: '4' },
+      // { Name: "Maio", Id: '5' },
+      // { Name: "Junho", Id: '6' },
+      // { Name: "Julho", Id: '7' },
+      // { Name: "Agosto", Id: '8' },
+      // { Name: "Setembro", Id: '9' },
+      // { Name: "Outubro", Id: '10' },
+      // { Name: "Novembro", Id: '11' },
+      // { Name: "Dezembro", Id: '12' }
+      // ], 
+      // valueField: "Id", 
+      // textField: "Name", 
+      // validate: "required"
+      // },
+      {
+          align: "center", 
+          name: "Data de criação", 
+          type: "text", 
+          width: 60,
+          type: "hidden" 
+      },
+
+      {
+          align: "center", 
+          name: "Data de Atualização", 
+          type: "text", 
+          width: 60,
+          type: "hidden", 
+      },
+
+      {
+          align: "center", 
+          name: "Resetar Senha", 
+          type: "checkbox", 
+          width: 60, 
+      },
+      // {
+      //     name: "Confirma senha", 
+      //     type: "text", 
+      //     width: 60, 
+      // },
+
+      // {
+      // name: "age", 
+      // type: "text", 
+      // width: 50, 
+      // validate: function(value)
+      // {
+          
+      // if(value > 0)
+      // {
+          
+      //     return true;
+      // }
+      // }
+      // },
+      // {
+      // name: "nome", 
+      // type: "text", 
+      // validate: "required"
+      // },
+      // {
+      // name: "categorias",
+      // title: "Selecionar nova categorias",
+      // type: "select",
+      // width: 100,
+      // items: categorias, valueField: "id", textField: "nome" },
+      {
+          type: "control"
+      }
+      ]
+
+
+
+      // });
+
+  })
+})
+
+  jsGrid.locale("pt-br");
+    $('#grid_table_profiles').jsGrid({
+
+      width: "100%",
+      height: "300px",
+
+      filtering: true,
+      // inserting:true,
+      editing: true,
+      sorting: true,
+      paging: true,
+      autoload: true,
+      pageSize: 10,
+      pageButtonCount: 5,
+
+      controller: {
+      loadData: function(filter){
+        return $.ajax({
+        type: "GET",
+        url: "/novoPerfil",
+        data: filter
+        });
+      },
+      // insertItem: function(item){
+      // return $.ajax({
+      // type: "POST",
+      // url: "/adminUser",
+      // data:item
+
+      // });
+
+      // },
+      updateItem: function(item){
+        return $.ajax({
+        type: "PUT",
+        url: "/novoPerfil",
+        data: item
+      });
+      },
+      deleteItem: function(item){
+        return $.ajax({
+        type: "DELETE",
+        url: "/novoPerfil",
+        data: item
+      });
+      },
+      },
+
+      fields: [
+      { 
+          autosearch: true, 
+          name: "id",
+          type: "hidden",
+          width: 5,
+          css: 'hide'
+      },
+      { 
+          autosearch: true, 
+          name: "Perfil", 
+          type: "text", 
+          width: 60, 
+          validate: "required"
+      },
+
+      {
+          autosearch: true, 
+          name: "Data de criação", 
+          type: "text", 
+          width: 60, 
+          validate: "required",
+          type: "hidden"
+          },
+
+       {
+          type: "control"
+      }
+      ]
+
+
+
+      // });
+
+  })
+
+
+})
+</script>
+@endsection
 

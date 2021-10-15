@@ -63,4 +63,14 @@ Route::group(['middleware' => ['auth']], function () {
     Route::put('/adminUser', 'admin@putUser');
     Route::delete('/adminUser', 'admin@deleteUser');
 
+
+    Route::get('/novoPerfil', 'admin@getPerfil');
+    Route::post('/novoPerfil', 'admin@postPerfil');
+    Route::delete('/novoPerfil', 'admin@deletePerfil');
+    Route::put('/novoPerfil', 'admin@putPerfil');
+    
+    
+
+   
+
 });
